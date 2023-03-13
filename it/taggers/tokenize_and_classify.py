@@ -4,9 +4,11 @@ import pynini
 from pynini.lib import pynutil
 
 from nemo_text_processing.text_normalization.en.graph_utils import (
+    NEMO_WHITE_SPACE,
     GraphFst,
-    NEMO_CHAR,
-    NEMO_DIGIT
+    delete_extra_space,
+    delete_space,
+    generator_main,
 )
 
 from nemo_text_processing.text_normalization.en.taggers.punctuation import PunctuationFst
@@ -48,8 +50,6 @@ class ClassifyFst(GraphFst):
             )
         if not overwrite_cache and far_file and os.path.exists(far_file):
             self.fst = pynini.Far(far_file, mode="r")["tokenize_and_classify"]
-            no_digits = pynini.closure(pynini.difference(NEMO_CHAR, NEMO_DIGIT))
-            self.fst_no_digits = pynini.compose(self.fst, no_digits).optimize()
             logging.info(f"ClassifyFst.fst was restored from {far_file}.")
         else:
             logging.info(f"Creating ClassifyFst grammars. This might take some time...")
@@ -70,7 +70,31 @@ class ClassifyFst(GraphFst):
                 | pynutil.add_weight(word_graph, 100)
             )
 
-            
 
+            punct = pynutil.insert("tokens { ") + pynutil.add_weight(punct_graph, weight=2.1) + pynutil.insert(" }")
+            punct = pynini.closure(
+                pynini.compose(pynini.closure(NEMO_WHITE_SPACE, 1), delete_extra_space)
+                | (pynutil.insert(" ") + punct),
+                1,
+            )
+            token = pynutil.insert("tokens { ") + classify + pynutil.insert(" }")
+            token_plus_punct = (
+                pynini.closure(punct + pynutil.insert(" ")) + token + pynini.closure(pynutil.insert(" ") + punct)
+            )
 
+            graph = token_plus_punct + pynini.closure(
+                (
+                    pynini.compose(pynini.closure(NEMO_WHITE_SPACE, 1), delete_extra_space)
+                    | (pynutil.insert(" ") + punct + pynutil.insert(" "))
+                )
+                + token_plus_punct
+            )
 
+            graph = delete_space + graph + delete_space
+            graph |= punct
+
+            self.fst = graph.optimize()
+
+            if far_file:
+                generator_main(far_file, {"tokenize_and_classify": self.fst})
+                logging.info(f"ClassifyFst grammars are saved to {far_file}.")

@@ -12,7 +12,7 @@ from nemo_text_processing.text_normalization.en.graph_utils import (
     delete_space
 )
 
-from nemo_text_processing.text_normalization.en.utils import get_abs_path
+from nemo_text_processing.text_normalization.it.utils import get_abs_path
 
 zero = pynini.invert(pynini.string_file(get_abs_path("data/numbers/zero.tsv")))
 digit = pynini.invert(pynini.string_file(get_abs_path("data/numbers/digit.tsv")))
@@ -21,7 +21,7 @@ tens = pynini.invert(pynini.string_file(get_abs_path("data/numbers/tens.tsv")))
 tens_one = pynini.invert(pynini.string_file(get_abs_path("data/numbers/tens_one.tsv")))
 hundreds = pynini.invert(pynini.string_file(get_abs_path("data/numbers/hundreds.tsv")))
 
-from nemo_text_processing.text_normalization.es.graph_utils import cardinal_separator  # ???
+from nemo_text_processing.text_normalization.es.graph_utils import cardinal_separator  # ??? TO CHECK!!!
 
 def filter_punctuation(fst: 'pynini.FstLike') -> 'pynini.FstLike':
     """

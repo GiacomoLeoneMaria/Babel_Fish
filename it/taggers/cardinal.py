@@ -11,7 +11,7 @@ from nemo_text_processing.text_normalization.en.graph_utils import (
     NEMO_WHITE_SPACE,
     delete_space
 )
-
+from nemo_text_processing.text_normalization.es.graph_utils import cardinal_separator  # ??? TO CHECK!!!
 from nemo_text_processing.text_normalization.it.utils import get_abs_path
 
 zero = pynini.invert(pynini.string_file(get_abs_path("data/numbers/zero.tsv")))
@@ -20,8 +20,6 @@ teen = pynini.invert(pynini.string_file(get_abs_path("data/numbers/teen.tsv")))
 tens = pynini.invert(pynini.string_file(get_abs_path("data/numbers/tens.tsv")))
 tens_one = pynini.invert(pynini.string_file(get_abs_path("data/numbers/tens_one.tsv")))
 hundreds = pynini.invert(pynini.string_file(get_abs_path("data/numbers/hundreds.tsv")))
-
-from nemo_text_processing.text_normalization.es.graph_utils import cardinal_separator  # ??? TO CHECK!!!
 
 def filter_punctuation(fst: 'pynini.FstLike') -> 'pynini.FstLike':
     """
@@ -88,9 +86,8 @@ class CardinalFst(GraphFst):
         self.hundreds = graph_hundreds.optimize()
 
         # three digit leading zeros
-        graph_hundreds_component = pynini.union(
-            graph_hundreds, pynutil.delete("0") + graph_tens
-        )
+        graph_hundreds_component = pynini.union(graph_hundreds, pynutil.delete("0") + graph_tens)
+        
         graph_hundreds_component_at_least_one_none_zero_digit = graph_hundreds_component | (pynutil.delete("00") + graph_digit)
         
         graph_hundreds_component_at_least_one_none_zero_digit_no_one = graph_hundreds_component | (pynutil.delete("00") + digits_no_one)

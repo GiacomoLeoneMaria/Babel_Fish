@@ -1,7 +1,7 @@
 from nemo_text_processing.text_normalization.en.graph_utils import GraphFst
 from nemo_text_processing.text_normalization.en.verbalizers.whitelist import WhiteListFst
 from nemo_text_processing.text_normalization.it.verbalizers.cardinal import CardinalFst
-
+from nemo_text_processing.text_normalization.it.verbalizers.electronic import ElectronicFst
 
 class VerbalizeFst(GraphFst):
     """
@@ -17,10 +17,13 @@ class VerbalizeFst(GraphFst):
         super().__init__(name="verbalize", kind="verbalize", deterministic=deterministic)
         cardinal = CardinalFst(deterministic=deterministic)
         cardinal_graph = cardinal.fst
+        electronic = ElectronicFst(deterministic=deterministic)
+        electronic_graph = electronic.fst
         whitelist_graph = WhiteListFst(deterministic=deterministic).fst
 
         graph = (
             cardinal_graph
+            | electronic_graph
             | whitelist_graph
         )
 

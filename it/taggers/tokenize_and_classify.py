@@ -16,7 +16,7 @@ from nemo_text_processing.text_normalization.en.taggers.punctuation import Punct
 from nemo_text_processing.text_normalization.it.taggers.cardinal import CardinalFst
 from nemo_text_processing.text_normalization.it.taggers.word import WordFst
 from nemo_text_processing.text_normalization.it.taggers.whitelist import WhiteListFst
-
+from nemo_text_processing.text_normalization.it.taggers.electronic import ElectronicFst
 
 class ClassifyFst(GraphFst):
     """
@@ -62,11 +62,15 @@ class ClassifyFst(GraphFst):
             self.whitelist = WhiteListFst(input_case=input_case, deterministic=deterministic, input_file=whitelist)
             whitelist_graph = self.whitelist.fst
 
+            self.electronic = ElectronicFst(deterministic=deterministic)
+            electronic_graph = self.electronic.fst
+
             punct_graph = PunctuationFst(deterministic=deterministic).fst
 
             classify = (
                 pynutil.add_weight(whitelist_graph, 1)
                 | pynutil.add_weight(cardinal_graph, 1.1)
+                | pynutil.add_weight(electronic_graph, 1.1)
                 | pynutil.add_weight(word_graph, 100)
             )
 

@@ -14,6 +14,13 @@ symbols = [x[0] for x in load_labels(get_abs_path("data/electronic/symbols.tsv")
 
 class ElectronicFst(GraphFst):
     """
+    Finite state transducer for classifying electronic: email addresses
+        e.g. "abc.def@studente.università.it" -> electronic { username: "abc.def" domain: "studente.università.it" preserve_order: true }
+        e.g. "www.abc.com/123" -> electronic { protocol: "www." domain: "abc.com/123" preserve_order: true }
+        e.g. "https://github.com/NVIDIA/electronic.py" -> electronic { protocol: "https://" domain: "github.com/NVIDIA/electronic.py" preserve_order: true }
+    Args:
+        deterministic: if True will provide a single transduction option,
+            for False multiple transduction are generated (used for audio-based normalization)
     """
     def __init__(self, deterministic: bool = True):
         super().__init__(name="electronic", kind="classify", deterministic=deterministic)

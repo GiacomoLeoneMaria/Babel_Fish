@@ -21,10 +21,8 @@ domain_common = pynini.string_file(get_abs_path("data/electronic/domain.tsv"))
 class ElectronicFst(GraphFst):
     """
     Finite state transducer for verbalizing electronic
-        e.g. electronic { username: "abc" domain: "hotmail.com" } -> "a b c arroba hotmail punto com"
-                                                           -> "a b c arroba h o t m a i l punto c o m"
-                                                           -> "a b c arroba hotmail punto c o m"
-                                                           -> "a b c at h o t m a i l punto com"
+        e.g. electronic { username: "abc.def2" domain: "studenti.università.it" } -> 
+        "a b c punto d e f due chiocciola s t u d e n t i punto u n i v e r s i t à punto IT
     Args:
         deterministic: if True will provide a single transduction option,
             for False multiple transduction are generated (used for audio-based normalization)

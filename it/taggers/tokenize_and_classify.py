@@ -17,6 +17,7 @@ from nemo_text_processing.text_normalization.it.taggers.cardinal import Cardinal
 from nemo_text_processing.text_normalization.it.taggers.word import WordFst
 from nemo_text_processing.text_normalization.it.taggers.whitelist import WhiteListFst
 from nemo_text_processing.text_normalization.it.taggers.electronic import ElectronicFst
+from nemo_text_processing.text_normalization.it.taggers.decimals import DecimalFst
 
 class ClassifyFst(GraphFst):
     """
@@ -57,6 +58,9 @@ class ClassifyFst(GraphFst):
             self.cardinal = CardinalFst(deterministic=deterministic)
             cardinal_graph = self.cardinal.fst
 
+            self.decimal = DecimalFst(cardinal=self.cardinal, deterministic=deterministic)
+            decimal_graph = self.decimal.fst
+
             word_graph = WordFst(deterministic=deterministic).fst
 
             self.whitelist = WhiteListFst(input_case=input_case, deterministic=deterministic, input_file=whitelist)
@@ -70,6 +74,7 @@ class ClassifyFst(GraphFst):
             classify = (
                 pynutil.add_weight(whitelist_graph, 1)
                 | pynutil.add_weight(cardinal_graph, 1.1)
+                | pynutil.add_weight(decimal_graph, 1.1) 
                 | pynutil.add_weight(electronic_graph, 1.1)
                 | pynutil.add_weight(word_graph, 100)
             )

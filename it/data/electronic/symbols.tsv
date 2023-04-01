@@ -1,19 +1,22 @@
 .	punto
 -	trattino
-_	underscore
+_	trattino basso
 !	punto esclamativo
 #	cancelletto
-$	segno del dollaro
+$	dollaro
 %	percento
-&	E commerciale
+&	e commerciale
 '	apostrofo
 *	asterisco
 +	più
 /	slash
 =	uguale
-?	punto di domanda
-^	circumflex
-`	virgolette a destra
+?	punto interrogativo
+^	esponente
+`	accento
+{	apri graffa
 |	barra verticale
+}	chiudi graffa
 ~	tilde
 ,	virgola
+:	due punti

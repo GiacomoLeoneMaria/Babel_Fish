@@ -55,7 +55,9 @@ class ElectronicFst(GraphFst):
             + pynutil.insert("\"")
         )
 
-        graph = username + insert_space + (domain_graph | domain_common_graph)
+        graph = (username + domain_graph) | domain_common_graph
+
+        # graph = username + insert_space + (domain_graph | domain_common_graph)
 
         # url
         protocol_start = pynini.accep("https://") | pynini.accep("http://")

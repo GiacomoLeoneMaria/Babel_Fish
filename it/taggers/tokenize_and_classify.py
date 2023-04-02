@@ -18,6 +18,7 @@ from nemo_text_processing.text_normalization.it.taggers.word import WordFst
 from nemo_text_processing.text_normalization.it.taggers.whitelist import WhiteListFst
 from nemo_text_processing.text_normalization.it.taggers.electronic import ElectronicFst
 from nemo_text_processing.text_normalization.it.taggers.decimals import DecimalFst
+from nemo_text_processing.text_normalization.it.taggers.measure import MeasureFst
 
 class ClassifyFst(GraphFst):
     """
@@ -69,6 +70,9 @@ class ClassifyFst(GraphFst):
             self.electronic = ElectronicFst(deterministic=deterministic)
             electronic_graph = self.electronic.fst
 
+            self.measure = MeasureFst(cardinal=self.cardinal, decimal=self.decimal, deterministic=deterministic)
+            measure_graph = self.measure.fst
+
             punct_graph = PunctuationFst(deterministic=deterministic).fst
 
             classify = (
@@ -76,6 +80,7 @@ class ClassifyFst(GraphFst):
                 | pynutil.add_weight(cardinal_graph, 1.1)
                 | pynutil.add_weight(decimal_graph, 1.1) 
                 | pynutil.add_weight(electronic_graph, 1.1)
+                | pynutil.add_weight(measure_graph, 1.1)
                 | pynutil.add_weight(word_graph, 100)
             )
 

@@ -3,6 +3,7 @@ from nemo_text_processing.text_normalization.en.verbalizers.whitelist import Whi
 from nemo_text_processing.text_normalization.it.verbalizers.cardinal import CardinalFst
 from nemo_text_processing.text_normalization.it.verbalizers.electronic import ElectronicFst
 from nemo_text_processing.text_normalization.it.verbalizers.decimal import DecimalFst
+from nemo_text_processing.text_normalization.it.verbalizers.measure import MeasureFst
 
 class VerbalizeFst(GraphFst):
     """
@@ -23,12 +24,15 @@ class VerbalizeFst(GraphFst):
         electronic = ElectronicFst(deterministic=deterministic)
         electronic_graph = electronic.fst
         whitelist_graph = WhiteListFst(deterministic=deterministic).fst
+        measure = MeasureFst(cardinal=cardinal, decimal=decimal, deterministic=deterministic)
+        measure_graph = measure.fst
 
         graph = (
             cardinal_graph
             | decimal_graph
             | electronic_graph
             | whitelist_graph
+            | measure_graph
         )
 
         self.fst = graph

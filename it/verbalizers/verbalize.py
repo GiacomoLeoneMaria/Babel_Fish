@@ -4,6 +4,7 @@ from nemo_text_processing.text_normalization.it.verbalizers.cardinal import Card
 from nemo_text_processing.text_normalization.it.verbalizers.electronic import ElectronicFst
 from nemo_text_processing.text_normalization.it.verbalizers.decimal import DecimalFst
 from nemo_text_processing.text_normalization.it.verbalizers.measure import MeasureFst
+from nemo_text_processing.text_normalization.it.verbalizers.money import MoneyFst
 
 class VerbalizeFst(GraphFst):
     """
@@ -26,6 +27,8 @@ class VerbalizeFst(GraphFst):
         whitelist_graph = WhiteListFst(deterministic=deterministic).fst
         measure = MeasureFst(cardinal=cardinal, decimal=decimal, deterministic=deterministic)
         measure_graph = measure.fst
+        money = MoneyFst(decimal=decimal, deterministic=deterministic)
+        money_graph = money.fst
 
         graph = (
             cardinal_graph
@@ -33,6 +36,7 @@ class VerbalizeFst(GraphFst):
             | electronic_graph
             | whitelist_graph
             | measure_graph
+            | money_graph
         )
 
         self.fst = graph

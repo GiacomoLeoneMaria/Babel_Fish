@@ -81,7 +81,7 @@ class MeasureFst(GraphFst):
         subgraph_cardinal |= (
             (optional_graph_negative + pynini.accep("1"))
             @ cardinal.fst
-            @ pynini.cdrewrite(pynini.cross("eins", "ein"), "", "", NEMO_SIGMA)
+            @ pynini.cdrewrite(pynini.cross("uno", "un"), "", "", NEMO_SIGMA)
             + insert_space
             + pynini.closure(pynutil.delete(" "), 0, 1)
             + unit_singular_graph
@@ -110,7 +110,7 @@ class MeasureFst(GraphFst):
             pynutil.insert("decimal { ")
             + decimal.final_graph_wo_negative
             + pynutil.delete('-')
-            + pynutil.insert(" } units: \"")
+            + pynutil.insert("\" } units: \"")
             + pynini.closure(NEMO_ALPHA, 1)
             + pynutil.insert("\"")
         )
@@ -118,7 +118,7 @@ class MeasureFst(GraphFst):
         decimal_times = (
             pynutil.insert("decimal { ")
             + decimal.final_graph_wo_negative
-            + pynutil.insert(" } units: \"")
+            + pynutil.insert("\" } units: \"")
             + pynini.union('x', 'X')
             + pynutil.insert("\"")
         )
@@ -151,7 +151,7 @@ class MeasureFst(GraphFst):
             | alpha_dash_decimal
             | cardinal_times
         )
-        final_graph += pynutil.insert(" preserve_order: true")
+        #final_graph += pynutil.insert(" preserve_order: true")
         final_graph = self.add_tokens(final_graph)
 
         self.fst = final_graph.optimize()

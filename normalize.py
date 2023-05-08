@@ -129,9 +129,6 @@ class Normalizer:
             # use normalize_with_audio.py
             from nemo_text_processing.text_normalization.ru.taggers.tokenize_and_classify import ClassifyFst
             from nemo_text_processing.text_normalization.ru.verbalizers.verbalize_final import VerbalizeFinalFst
-        elif lang == 'it':
-            from nemo_text_processing.text_normalization.it.taggers.tokenize_and_classify import ClassifyFst
-            from nemo_text_processing.text_normalization.it.verbalizers.verbalize_final import VerbalizeFinalFst
         elif lang == 'de':
             from nemo_text_processing.text_normalization.de.taggers.tokenize_and_classify import ClassifyFst
             from nemo_text_processing.text_normalization.de.verbalizers.verbalize_final import VerbalizeFinalFst
@@ -147,6 +144,9 @@ class Normalizer:
         elif lang == 'ar':
             from nemo_text_processing.text_normalization.ar.taggers.tokenize_and_classify import ClassifyFst
             from nemo_text_processing.text_normalization.ar.verbalizers.verbalize_final import VerbalizeFinalFst
+        elif lang == 'it':
+            from nemo_text_processing.text_normalization.it.taggers.tokenize_and_classify import ClassifyFst
+            from nemo_text_processing.text_normalization.it.verbalizers.verbalize_final import VerbalizeFinalFst
         else:
             raise NotImplementedError(f"Language {lang} has not been supported yet.")
 

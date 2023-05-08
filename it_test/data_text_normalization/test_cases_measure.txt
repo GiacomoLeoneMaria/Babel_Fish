@@ -1,4 +1,4 @@
-1 m~uno metro
+1 m~un metro
 3 m~tre metri
 4,3 m~quattro virgola tre metri
 5 km/s~cinque chilometri per secondo

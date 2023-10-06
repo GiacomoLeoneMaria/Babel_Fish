@@ -58,7 +58,7 @@ model:
     punct_post_process: true
 
   text_tokenizer:
-      _target_: nemo.collections.common.tokenizers.text_to_speech.tts_tokenizers.ItalianCharsTokenizer
+      _target_: nemo.collections.common.tokenizers.text_to_speech.tts_tokenizers.ItalianPhonemesTokenizer
       punct: true
       apostrophe: true
       pad_with_space: true
@@ -91,8 +91,8 @@ model:
     dataloader_params:
       drop_last: false
       shuffle: true
-      batch_size: 16
-      num_workers: 1
+      batch_size: 32
+      num_workers: 12
       pin_memory: true
 
   validation_ds:
@@ -124,7 +124,7 @@ model:
       drop_last: false
       shuffle: false
       batch_size: 32
-      num_workers: 1
+      num_workers: 12
       pin_memory: true
 
   preprocessor:

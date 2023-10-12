@@ -38,7 +38,7 @@ def get_args():
     return args
 
 
-EXTRACTED_FOLDER = "il_fu_mattia_pascal"
+EXTRACTED_FOLDER = "malavoglia"
 
 
 def __process_transcript(file_path: str):

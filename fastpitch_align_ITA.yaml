@@ -5,7 +5,7 @@ validation_datasets: ???
 sup_data_path: ???
 sup_data_types: [ "align_prior_matrix", "pitch" ]
 
-pitch_fmin: 65.40639132514966
+pitch_fmin: 65.4063949584961
 pitch_fmax: 651.6829223632812
 
 # these frame-wise values depend on pitch_fmin and pitch_fmax, you can get values
@@ -25,7 +25,7 @@ window: hann
 
 model:
   learn_alignment: true
-  bin_loss_warmup_epochs: 1000
+  bin_loss_warmup_epochs: 1
 
   n_speakers: 1
   max_token_duration: 75
@@ -92,7 +92,7 @@ model:
       drop_last: false
       shuffle: true
       batch_size: 32
-      num_workers: 12
+      num_workers: 2
       pin_memory: true
 
   validation_ds:
@@ -123,8 +123,8 @@ model:
     dataloader_params:
       drop_last: false
       shuffle: false
-      batch_size: 32
-      num_workers: 12
+      batch_size: 16
+      num_workers: 2
       pin_memory: true
 
   preprocessor:
@@ -203,9 +203,9 @@ model:
 
     sched:
       name: NoamAnnealing
-      warmup_steps: 10
+      warmup_steps: 1000
       last_epoch: -1
-      d_model: 1  # Disable scaling based on model dim
+      d_model: 1 # Disable scaling based on model dim
 
 trainer:
   num_nodes: 1
@@ -213,7 +213,7 @@ trainer:
   accelerator: gpu
   strategy: ddp
   precision: 16-mixed
-  max_epochs: 10000
+  max_epochs: -1
   accumulate_grad_batches: 1
   gradient_clip_val: 1000.0
   enable_checkpointing: false

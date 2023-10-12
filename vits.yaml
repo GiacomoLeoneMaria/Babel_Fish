@@ -11,14 +11,11 @@ validation_datasets: ???
 sup_data_path: null
 sup_data_types: null
 
-phoneme_dict_path: "scripts/tts_dataset_files/ipa_cmudict-0.7b_nv23.01.txt"
-heteronyms_path: "scripts/tts_dataset_files/heteronyms-052722"
-
 # Default values from librosa.pyin
 pitch_fmin: 65.40639132514966
 pitch_fmax: 2093.004522404789
 
-sample_rate: 22050
+sample_rate: 16000
 n_mel_channels: 80
 n_window_size: 1024
 n_window_stride: 256
@@ -48,9 +45,11 @@ model:
   c_kl: 1.
   use_spectral_norm: false
 
+  model_restore_path: /home/giacomo/win-home/Downloads/VITS21.ckpt
+
   text_normalizer:
     _target_: nemo_text_processing.text_normalization.normalize.Normalizer
-    lang: en
+    lang: it
     input_case: cased
 
   text_normalizer_call_kwargs:
@@ -59,20 +58,11 @@ model:
     punct_post_process: true
 
   text_tokenizer:
-    _target_: nemo.collections.common.tokenizers.text_to_speech.tts_tokenizers.IPATokenizer
+    _target_: nemo.collections.common.tokenizers.text_to_speech.tts_tokenizers.ItalianPhonemesTokenizer
     punct: true
     apostrophe: true
     pad_with_space: false
-    g2p:
-      _target_: nemo.collections.tts.g2p.models.i18n_ipa.IpaG2p
-      phoneme_dict: ${phoneme_dict_path}
-      heteronyms: ${heteronyms_path}
-      phoneme_probability: 0.8
-      # Relies on the heteronyms list for anything that needs to be disambiguated
-      ignore_ambiguous_words: false
-      use_chars: true
-      use_stresses: true
-
+    
   train_ds:
     dataset:
       _target_: "nemo.collections.tts.data.dataset.TTSDataset"
@@ -95,7 +85,7 @@ model:
       pitch_fmax: ${model.pitch_fmax}
     
     dataloader_params:
-      num_workers: 8
+      num_workers: 2
       pin_memory: false
 
     batch_sampler:
@@ -129,7 +119,7 @@ model:
       drop_last: false
       shuffle: false
       batch_size: 16
-      num_workers: 4
+      num_workers: 2
       pin_memory: false
 
   preprocessor:
@@ -187,7 +177,7 @@ model:
 
 trainer:
   num_nodes: 1
-  devices: 2
+  devices: 1
   accelerator: gpu
   strategy: ddp
   precision: 32
@@ -209,5 +199,5 @@ exp_manager:
   checkpoint_callback_params:
     monitor: loss_gen_all
     mode: min
-  resume_if_exists: false
-  resume_ignore_no_checkpoint: false
+  resume_if_exists: true
+  resume_ignore_no_checkpoint: true

@@ -1,6 +1,6 @@
 name: "ds_for_fastpitch_align"
 
-manifest_filepath: "/home/giacomo/dataset/MAILABS/it_IT/by_book/female/lisa_caputo/train_manifest_phonemes.json"
+manifest_filepath: "/home/giacomo/il_fu_mattia_pascal/train_manifest_phonemes.json"
 sup_data_path: "sup_data"
 sup_data_types: [ "align_prior_matrix", "pitch" ]
 
